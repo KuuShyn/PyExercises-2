@@ -1,20 +1,11 @@
 from tkinter import *
-root = Tk()
-root.title("┬──┬ ノ( ゜-゜ノ)")
-root.iconbitmap('catcringe.ico')
+import os
 
-MyLeftPos = (root.winfo_screenwidth() - 500) / 2
-myTopPos = (root.winfo_screenheight() - 300) / 2
+def find(name, path):
+    for root, _, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
 
-root.geometry("%dx%d+%d+%d" % (530, 110, MyLeftPos, myTopPos))
-root.resizable(False, False)
-
-frameCnt = 48
-animgif = [PhotoImage(file='tenor.gif', format='gif -index %i' % (i))
-           for i in range(frameCnt)]
-
-Vertical = Frame(root, bg='black', height=120, width=2)
-Vertical.place(x=155, y=2)
 
 def update(ind):
     frame = animgif[ind]
@@ -22,13 +13,32 @@ def update(ind):
     if ind == frameCnt:
         ind = 0
     anim.configure(image=frame)
-    root.after(100, update, ind)
+    main.after(100, update, ind)
 
-anim = Label(root)
+
+main = Tk()
+main.title("┬──┬ ノ( ゜-゜ノ)")
+
+main.iconbitmap(find('catcringe.ico', 'C:'))
+
+MyLeftPos = (main.winfo_screenwidth() - 500) / 2
+myTopPos = (main.winfo_screenheight() - 300) / 2
+
+main.geometry("%dx%d+%d+%d" % (530, 110, MyLeftPos, myTopPos))
+main.resizable(False, False)
+
+frameCnt = 48
+animgif = [PhotoImage(file=find('tenor.gif', 'C:'), format='gif -index %i' % (i))
+           for i in range(frameCnt)]
+
+anim = Label(main)
 anim.pack(side=LEFT)
 
+Vertical = Frame(main, bg='black', height=120, width=2)
+Vertical.place(x=155, y=2)
+
 text = Label(
-    root,
+    main,
     font=('Comic Sans MS', 26, 'bold', 'italic'),
     foreground='snow',
     background='dodger blue',
@@ -37,5 +47,5 @@ text = Label(
 
 text.pack(side=RIGHT)
 
-root.after(0, update, 0)
-root.mainloop()
+main.after(0, update, 0)
+main.mainloop()
