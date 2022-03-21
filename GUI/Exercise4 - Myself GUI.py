@@ -6,16 +6,6 @@ def find(name, path):
         if name in files:
             return os.path.join(root, name)
 
-
-def update(ind):
-    frame = animgif[ind]
-    ind += 1
-    if ind == frameCnt:
-        ind = 0
-    anim.configure(image=frame)
-    main.after(100, update, ind)
-
-
 main = Tk()
 main.title("┬──┬ ノ( ゜-゜ノ)")
 
@@ -31,8 +21,18 @@ frameCnt = 48
 animgif = [PhotoImage(file=find('tenor.gif', 'C:'), format='gif -index %i' % (i))
            for i in range(frameCnt)]
 
+def update(ind):
+    frame = animgif[ind]
+    ind += 1
+    if ind == frameCnt:
+        ind = 0
+    anim.configure(image=frame)
+    main.after(100, update, ind)
+
 anim = Label(main)
 anim.pack(side=LEFT)
+
+main.after(0, update, 0)
 
 Vertical = Frame(main, bg='black', height=120, width=2)
 Vertical.place(x=155, y=2)
@@ -47,5 +47,4 @@ text = Label(
 
 text.pack(side=RIGHT)
 
-main.after(0, update, 0)
 main.mainloop()
